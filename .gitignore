@@ -1,3 +1,6 @@
+aws/
+ssh_key/
+
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 

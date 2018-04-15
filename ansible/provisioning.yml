@@ -1,0 +1,8 @@
+- hosts: all
+  gather_facts: False
+
+  tasks:
+  - name: install python
+    raw: sudo bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python-minimal)"
+  - name: install docker-ce
+    raw: sudo bash -c "test -e /usr/bin/docker || (apt -qqy update && apt-get install -qy apt-transport-https ca-certificates curl software-properties-common && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" && sudo apt -qqy update && apt install -qy docker-ce)"

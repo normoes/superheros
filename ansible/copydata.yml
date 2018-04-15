@@ -1,0 +1,65 @@
+- hosts: all
+  gather_facts: True
+  # become: yes
+  # become_method: sudo
+
+  tasks:
+  - name: delete superhero folder
+    file:
+        state: absent
+        path: "/home/ubuntu/payworks/superhero/"
+  - name: Creates directory
+    file:
+        path: /home/ubuntu/payworks/superhero
+        state: directory
+  - name: delete database folder
+    file:
+        state: absent
+        path: "/home/ubuntu/payworks/database/"
+  - name: Creates directory
+    file:
+        path: /home/ubuntu/payworks/database
+        state: directory
+
+  - name: copy superhero jar
+    copy:
+        src: /home/norman/jobs/payworks/superhero/target/superhero.jar
+        dest: /home/ubuntu/payworks/superhero/superhero.jar
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rwx,g=r,o=r
+  - name: copy dockerignore file
+    copy:
+        src: /home/norman/jobs/payworks/superhero/.dockerignore
+        dest: /home/ubuntu/payworks/superhero//.dockerignore
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rwx,g=r,o=r
+  - name: copy Dockerfile
+    copy:
+        src: /home/norman/jobs/payworks/superhero/Dockerfile
+        dest: /home/ubuntu/payworks/superhero/Dockerfile
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rwx,g=r,o=r
+  - name: copy build_image.sh
+    copy:
+        src: /home/norman/jobs/payworks/superhero/build_image.sh
+        dest: /home/ubuntu/payworks/superhero/build_image.sh
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rwx,g=r,o=r
+  - name: copy start_superheros.sh
+    copy:
+        src: /home/norman/jobs/payworks/superhero/start_superheros.sh
+        dest: /home/ubuntu/payworks/superhero/start_superheros.sh
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rwx,g=r,o=r
+  - name: copy start_mongo.sh
+    copy:
+        src: /home/norman/jobs/payworks/superhero/mongodb_local/start_mongo.sh
+        dest: /home/ubuntu/payworks/database/start_mongo.sh
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rwx,g=r,o=r

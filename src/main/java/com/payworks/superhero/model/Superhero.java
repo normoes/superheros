@@ -14,6 +14,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.payworks.superhero.helpers.JsonFunctions;
 
+/**
+ * <h1> Superhero </h1>
+ * 
+ * <p>
+ * Since version 0.0.2:
+ * allies can be empty/null
+ * 
+ * @author Norman Moeschter-SChenck
+ * @version 0.0.2
+ * @since 2018-04-14
+ *
+ */
 @Document(collection = "superheros")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Superhero {

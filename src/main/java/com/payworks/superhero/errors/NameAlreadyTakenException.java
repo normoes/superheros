@@ -3,8 +3,8 @@ package com.payworks.superhero.errors;
 import org.springframework.http.HttpStatus;
 
 /**
- * 
- * A superhero is created but the given name is taken.
+ * <h1> NameAlreadyTakenException </h1>
+ * A {@code Superhero} is created but the given name is taken.
  * 
  * Return {@code CONFLICT}.
  * 

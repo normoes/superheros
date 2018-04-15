@@ -3,7 +3,7 @@ package com.payworks.superhero.errors;
 import org.springframework.http.HttpStatus;
 
 /**
- * 
+ * <h1> BadRequestException </h1>
  * Something went wrong while HTTP request was processed.
  * 
  * Return {@code BAD REQUEST}.

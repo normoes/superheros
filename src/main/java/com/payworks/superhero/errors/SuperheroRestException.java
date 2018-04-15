@@ -3,6 +3,7 @@ package com.payworks.superhero.errors;
 import org.springframework.http.HttpStatus;
 
 /**
+ * <h1> SuperheroRestException </h1>
  * This class works as base class for all HTTP REST exceptions.
  * 
  * It provides an HTTP status code.

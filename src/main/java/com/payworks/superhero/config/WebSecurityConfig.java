@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 /**
+ * <h1> WebSecurityConfig </h1>
  * This class sets up spring security and configures it.
  * 
  * A user can login using Basic Authentication.

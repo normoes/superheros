@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 
 /**
+ * <h1> JsonError </h1>
  * With every error create an error object, which, later on, can be
  * easily serialized to a JSON string representation.
  * 

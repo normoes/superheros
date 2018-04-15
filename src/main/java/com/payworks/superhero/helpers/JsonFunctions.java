@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 /**
- *<h1> JsonFunctions </h1>
- * <p>This class contains static helper methods when working with JSON.
+ * <h1> JsonFunctions </h1>
+ * This class contains static helper methods when working with JSON.
  *
  * @author Norman Moeschter-Schenck
  * @version 0.0.1

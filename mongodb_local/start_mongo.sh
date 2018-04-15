@@ -3,7 +3,7 @@
 set -euo pipefail
 echo "removing running/existing mongo container"
 # do not exit with error code if no container should be available
-container=$(docker container ls -a -q --filter name=payworks-superheros$)
+container=$(docker container ls -a -q --filter name=payworks-db$)
 if [ ! -z "$container" ]; then
   docker rm -f "$container"
 fi
@@ -19,9 +19,9 @@ unset store
 echo "creating mongo container"
 docker run -d \
     --log-driver=json-file --log-opt max-size=10m --log-opt max-file=3 \
-    -p 27017:27017 \
+    --net host \
     -e HOME="/data" \
     -v superheros-store:/data/db \
-    --name payworks-superheros \
+    --name payworks-db \
     --restart unless-stopped \
     mongo:3.4

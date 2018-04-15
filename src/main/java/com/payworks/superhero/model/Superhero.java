@@ -27,8 +27,7 @@ public class Superhero {
 	private String publisher;
 	@NotNull
 	private List<String> powers;
-	@NotNull
-	private List<Superhero> allies;
+	private List<String> allies;
 	private Date firstAppearance;
 	
 	public String getName() {
@@ -43,7 +42,7 @@ public class Superhero {
 	public void setPseudonym(String pseudonym) {
 		this.pseudonym = pseudonym;
 	}
-	@JsonFormat(pattern="YYYY-MM-DD")  // pattern="yyyy-MM-dd"
+	
 	public String getPublisher() {
 		return publisher;
 	}
@@ -56,12 +55,14 @@ public class Superhero {
 	public void setPowers(List<String> powers) {
 		this.powers = powers;
 	}
-	public List<Superhero> getAllies() {
+	public List<String> getAllies() {
 		return allies;
 	}
-	public void setAllies(List<Superhero> allies) {
+	public void setAllies(List<String> allies) {
 		this.allies = allies;
 	}
+	// format JAVA Date/mongodb ISODate to 'yyyy-MM-dd' (2018-04-15)
+	@JsonFormat(pattern="yyyy-MM-dd") 
 	public Date getFirstAppearance() {
 		return firstAppearance;
 	}

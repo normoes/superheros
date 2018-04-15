@@ -1,5 +1,6 @@
 aws/
 ssh_key/
+*.retry
 
 /target/
 !.mvn/wrapper/maven-wrapper.jar

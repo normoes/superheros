@@ -1,17 +1,22 @@
 # superhero service
 
+Please have a look at the API below.
+
 This is the superhero service:
  * create a new superhero
  * get all superheros
  * get a specific superhero
 
-## Java framework
+## spring boot framework
  * spring boot 2.0.1.RELEASE
-   - bundles all the necessray dependencies:
+   - bundles all the necessary dependencies:
      + web
      + data
      + security
      + test
+     + ...
+   - easy to set up
+   - great documentation and support
 
 ## The infrastructure
  * Superheros are stored within a mongodb collection.
@@ -54,5 +59,6 @@ A reverse proxy has many other advantages
  - request limitation
  - domains
  - upstreams
+ - port 80
  - ...
 

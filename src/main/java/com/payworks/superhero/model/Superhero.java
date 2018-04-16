@@ -1,6 +1,8 @@
 package com.payworks.superhero.model;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -21,8 +23,12 @@ import com.payworks.superhero.helpers.JsonFunctions;
  * Since version 0.0.2:
  * allies can be empty/null
  * 
+ * <p>
+ * Since version 0.0.3:
+ * compare {@code firstAppearance} by values of year, month and day only
+ * 
  * @author Norman Moeschter-SChenck
- * @version 0.0.2
+ * @version 0.0.3
  * @since 2018-04-14
  *
  */
@@ -131,11 +137,24 @@ public class Superhero {
 				return false;
 		} else if (!CollectionUtils.isEqualCollection(allies, other.allies))
 			return false;
+		
 		if (firstAppearance == null) {
 			if (other.firstAppearance != null)
 				return false;
-		} else if (firstAppearance.compareTo(other.firstAppearance) != 0)
-			return false;
+		} else { 
+			Calendar calendar = new GregorianCalendar();
+			calendar.setTime(this.getFirstAppearance());
+			int thisYear = calendar.get(Calendar.YEAR);
+			int thisMonth = calendar.get(Calendar.MONTH);
+			int thisDay = calendar.get(Calendar.DAY_OF_MONTH);
+			calendar.setTime(other.getFirstAppearance());
+			int otherYear = calendar.get(Calendar.YEAR);
+			int otherMonth = calendar.get(Calendar.MONTH);
+			int otherDay = calendar.get(Calendar.DAY_OF_MONTH);
+			
+			if ( thisYear != otherYear || thisMonth != otherMonth || thisDay != otherDay )
+				return false;
+		}
 				
 		return true;
 	}

@@ -9,7 +9,6 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,14 +36,13 @@ import com.payworks.superhero.repo.SuperheroRepo;
 public class SuperheroController {
 	private static final Logger logger = LoggerFactory.getLogger(SuperheroController.class);
 	
-	private final SuperheroRepo superheroRepo;
+	private SuperheroRepo superheroRepo;
 	
 	/**
 	 * Superhero constructor
 	 * 
 	 * @param superheroRepo is injected on creation
 	 */
-	@Autowired
 	public SuperheroController(SuperheroRepo superheroRepo) {
 		this.superheroRepo = superheroRepo;
     }
@@ -82,7 +80,7 @@ public class SuperheroController {
     	}
     	
     	// store the new superhero into the database
-        newSuperhero = superheroRepo.save(hero.get());
+        newSuperhero = this.superheroRepo.save(hero.get());
         response.setStatus(HttpServletResponse.SC_CREATED);
         return newSuperhero;
     }
@@ -98,7 +96,7 @@ public class SuperheroController {
     @RequestMapping(value = {"/superheros"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Superhero> getAllSuperheros(HttpServletResponse response) {
         logger.info("GET superheros");
-        List<Superhero> superheros = superheroRepo.findAll();
+        List<Superhero> superheros = this.superheroRepo.findAll();
 
         response.setStatus(HttpServletResponse.SC_OK);
         return superheros;
@@ -117,7 +115,7 @@ public class SuperheroController {
     @RequestMapping(value = {"/superheros/{name}"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Superhero getUserById(@PathVariable("name") String name, HttpServletResponse response) throws ResourceNotFoundException {
         logger.info("GET specific superhero");
-        Optional<Superhero> superhero = Optional.ofNullable(superheroRepo.findByName(name));
+        Optional<Superhero> superhero = Optional.ofNullable(this.superheroRepo.findByName(name));
     	if ( superhero.isPresent() ) {
     		response.setStatus(HttpServletResponse.SC_OK);
     		return superhero.get();

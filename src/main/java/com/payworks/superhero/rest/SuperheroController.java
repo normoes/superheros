@@ -62,8 +62,7 @@ public class SuperheroController {
      * @return the created {@code Superhero} as JSON string.
      * @throws NameAlreadyTakenException when POSTing a {@code Superhero} whose name is taken already. 
      */
-    @RequestMapping(value = {"/superheros"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces =
-    		MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = {"/superheros"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Superhero createNewSuperhero(@Valid @RequestBody Superhero newSuperhero, HttpServletResponse response) throws NameAlreadyTakenException{
     	logger.info("POST superhero");    	    	
         logger.info(JsonFunctions.getJsonFromObject(newSuperhero));

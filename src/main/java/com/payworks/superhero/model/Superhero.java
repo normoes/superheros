@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.payworks.superhero.helpers.JsonFunctions;
+import com.payworks.superhero.validation.ValidDate;
 
 /**
  * <h1> Superhero </h1>
@@ -22,13 +23,15 @@ import com.payworks.superhero.helpers.JsonFunctions;
  * <p>
  * Since version 0.0.2:
  * allies can be empty/null
- * 
  * <p>
  * Since version 0.0.3:
  * compare {@code firstAppearance} by values of year, month and day only
+ * <p>
+ * Since version 0.0.4:
+ * added {@code @ValidDate} annotation to validate empty value in JSON string as incorrect Java.Date
  * 
  * @author Norman Moeschter-SChenck
- * @version 0.0.3
+ * @version 0.0.4
  * @since 2018-04-14
  *
  */
@@ -46,6 +49,7 @@ public class Superhero {
 	@NotNull
 	private List<String> powers;
 	private List<String> allies;
+	@ValidDate
 	private Date firstAppearance;
 	
 	public String getName() {

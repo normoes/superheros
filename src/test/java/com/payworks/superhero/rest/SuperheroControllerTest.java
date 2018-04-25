@@ -4,8 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -42,7 +45,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payworks.superhero.SuperheroApplication;
+import com.payworks.superhero.errors.NameAlreadyTakenException;
 import com.payworks.superhero.helpers.JsonFunctions;
 import com.payworks.superhero.model.Superhero;
 import com.payworks.superhero.repo.SuperheroRepo;
@@ -52,8 +57,12 @@ import com.payworks.superhero.repo.SuperheroRepo;
  * <h1> SuperheroControllerTest </h1>
  * Test the {@code Superhero} REST controller.
  * 
+ * <p>
+ * Since version 0.0.2:
+ * Added test case for empty Date in JSON string.
+ * 
  * @author Norman Moeschter-Schenck
- * @version 0.0.1
+ * @version 0.0.2
  * @since 2018-04-15
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -65,6 +74,9 @@ public class SuperheroControllerTest {
 	public static final Logger logger = LoggerFactory.getLogger(SuperheroControllerTest.class);
 
 	private static final String url = "/superheros";
+	
+	@Autowired
+	ObjectMapper objectMapper;
 	
 	@Autowired
 	@Mock
@@ -263,5 +275,54 @@ public class SuperheroControllerTest {
 		String day = dFormat.format(Double.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
 		// Format should be: 'YYYY-MM-DD'.
 		assertTrue(jsonDate.equals(year + "-" + month + "-" + day));
+	}
+	
+	/**
+	 * Date {@code firstAppearance} may not be {@code null}.
+	 * 
+	 * @throws Exception if anything goes wrong
+	 */
+	@Test
+	public void getSuperheroDateNotNull()  throws Exception {
+		Mockito.when(superheroRepo.findByName(any(String.class))).thenReturn(null);
+		
+		this.batman.setFirstAppearance(null);
+		
+		logger.error(objectMapper.writeValueAsString(this.batman));
+		
+		mockMvc.perform(
+		        post(SuperheroControllerTest.url)
+			        .contentType(MediaType.APPLICATION_JSON)
+		            .content(objectMapper.writeValueAsString(this.batman))
+		        )
+				.andExpect(status().isBadRequest())
+//				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+//				.andExpect(jsonPath("exception").value(InvalidIdException.class.getCanonicalName()))
+				;
+	}	
+	
+	/**
+	 * Date {@code firstAppearance} may not be empty.
+	 * 
+	 * @throws Exception if anything goes wrong
+	 */
+	@Test
+	public void getSuperheroDateNotEmpty()  throws Exception {
+		Mockito.when(superheroRepo.findByName(any(String.class))).thenReturn(null);
+		
+		String content = "{\"name\":\"batman\",\"pseudonym\":\"Bruce Wayne\",\"publisher\":\"DC\",\"powers\":[\"some great thing\",\"another great thing, nobody ever thought of\"],\"allies\":[\"robin1\",\"robin2\",\"robin3\"],\"firstAppearance\":\"\"}";
+		
+		logger.error(objectMapper.writeValueAsString(this.batman));
+		
+		MvcResult result = mockMvc.perform(
+		        post(SuperheroControllerTest.url)
+			        .contentType(MediaType.APPLICATION_JSON)
+		            .content(content)
+		        )
+				.andExpect(status().isBadRequest())
+				.andDo(print())
+//				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+//				.andExpect(jsonPath("exception").value(NameAlreadyTakenException.class.getCanonicalName()))				
+				.andReturn();
 	}
 }

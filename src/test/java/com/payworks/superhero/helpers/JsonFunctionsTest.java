@@ -3,8 +3,8 @@ package com.payworks.superhero.helpers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,8 +21,12 @@ import com.payworks.superhero.model.Superhero;
  * <h1> JsonFunctionsTest </h1>
  * Test Json functionalities.
  * 
+ * <p>
+ * Since version 0.0.2:
+ * Replaced {@code Date} by {@code LocalDate}.
+ * 
  * @author Norman Moeschter-Schenck
- * @version 0.0.1
+ * @version 0.0.2
  * @since 2018-04-16
  *
  */
@@ -43,7 +47,7 @@ public class JsonFunctionsTest {
 	    this.batman.setName("batman");
 	    this.batman.setPublisher("DC");
 	    this.batman.setPseudonym("Bruce Wayne");
-	    this.batman.setFirstAppearance(new Date());
+	    this.batman.setFirstAppearance(LocalDate.now());
 	    this.batman.setPowers(Arrays.asList("some great thing","another great thing, nobody ever thought of"));
 	    this.batman.setAllies(Arrays.asList("robin"));
 	}

@@ -14,8 +14,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * added Basic Authentication
  * allies of a {@code Superhero} can be empty/null
  * 
+ * <p>
+ * Since version 0.0.3:
+ * replaced {@code Date} by {@code LocalDate} in order to only allow valid months (1..12) and days
+ * for {@code firstAppearance} in {@link Superhero}
+ * 
  * @author Norman Moeschter-Schenck
- * @version 0.0.2
+ * @version 0.0.3
  * @since 2018-04-14
  *
  */

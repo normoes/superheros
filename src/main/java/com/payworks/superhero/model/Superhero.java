@@ -1,5 +1,7 @@
 package com.payworks.superhero.model;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -29,9 +31,12 @@ import com.payworks.superhero.validation.ValidDate;
  * <p>
  * Since version 0.0.4:
  * added {@code @ValidDate} annotation to validate empty value in JSON string as incorrect Java.Date
+ * <p>
+ * Since version 0.0.5:
+ * replaced {@code Date} by {@code LocalDate} in order to only allow valid months (1..12) and days
  * 
  * @author Norman Moeschter-SChenck
- * @version 0.0.4
+ * @version 0.0.5
  * @since 2018-04-14
  *
  */
@@ -50,7 +55,9 @@ public class Superhero {
 	private List<String> powers;
 	private List<String> allies;
 	@ValidDate
-	private Date firstAppearance;
+	// format JAVA Date/mongodb ISODate to 'yyyy-MM-dd' (2018-04-15)	
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate firstAppearance;
 	
 	public String getName() {
 		return name;
@@ -82,13 +89,11 @@ public class Superhero {
 	}
 	public void setAllies(List<String> allies) {
 		this.allies = allies;
-	}
-	// format JAVA Date/mongodb ISODate to 'yyyy-MM-dd' (2018-04-15)
-	@JsonFormat(pattern="yyyy-MM-dd") 
-	public Date getFirstAppearance() {
+	}	
+	public LocalDate getFirstAppearance() {
 		return firstAppearance;
 	}
-	public void setFirstAppearance(Date firstAppearance) {
+	public void setFirstAppearance(LocalDate firstAppearance) {
 		this.firstAppearance = firstAppearance;
 	}
 	
@@ -147,11 +152,13 @@ public class Superhero {
 				return false;
 		} else { 
 			Calendar calendar = new GregorianCalendar();
-			calendar.setTime(this.getFirstAppearance());
+			Date date = Date.from(this.getFirstAppearance().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+			calendar.setTime(date);		
 			int thisYear = calendar.get(Calendar.YEAR);
 			int thisMonth = calendar.get(Calendar.MONTH);
 			int thisDay = calendar.get(Calendar.DAY_OF_MONTH);
-			calendar.setTime(other.getFirstAppearance());
+			date = Date.from(other.getFirstAppearance().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+			calendar.setTime(date);
 			int otherYear = calendar.get(Calendar.YEAR);
 			int otherMonth = calendar.get(Calendar.MONTH);
 			int otherDay = calendar.get(Calendar.DAY_OF_MONTH);

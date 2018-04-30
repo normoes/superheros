@@ -5,12 +5,13 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -47,7 +48,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payworks.superhero.SuperheroApplication;
-import com.payworks.superhero.errors.NameAlreadyTakenException;
 import com.payworks.superhero.helpers.JsonFunctions;
 import com.payworks.superhero.model.Superhero;
 import com.payworks.superhero.repo.SuperheroRepo;
@@ -60,9 +60,15 @@ import com.payworks.superhero.repo.SuperheroRepo;
  * <p>
  * Since version 0.0.2:
  * Added test case for empty Date in JSON string.
+ * <p>
+ * Since version 0.0.3:
+ * Added test cases to check {@code firstAppearance} ({@code Date}).
+ * <p>
+ * Since version 0.0.4:
+ * Replaced {@code Date} by {@code LocalDate}.
  * 
  * @author Norman Moeschter-Schenck
- * @version 0.0.2
+ * @version 0.0.4
  * @since 2018-04-15
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -110,7 +116,7 @@ public class SuperheroControllerTest {
 	    this.batman.setName("batman");
 	    this.batman.setPublisher("DC");
 	    this.batman.setPseudonym("Bruce Wayne");
-	    this.batman.setFirstAppearance(new Date());
+	    this.batman.setFirstAppearance(LocalDate.now());
 	    this.batman.setPowers(Arrays.asList("some great thing","another great thing, nobody ever thought of"));
 	    this.batman.setAllies(Arrays.asList("robin1","robin2", "robin3"));
 	    
@@ -118,7 +124,7 @@ public class SuperheroControllerTest {
 	    this.robin.setName("robin1");
 	    this.robin.setPublisher("DC");
 	    this.robin.setPseudonym("dick grayson");
-	    this.robin.setFirstAppearance(new Date());
+	    this.robin.setFirstAppearance(LocalDate.now());
 	    this.robin.setPowers(Arrays.asList("great listener"));
 	}
 	
@@ -267,7 +273,8 @@ public class SuperheroControllerTest {
 		String jsonDate = (String) obj.get("firstAppearance");
 		// Get year, month and date from batman's firstAppearance
 		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(this.batman.getFirstAppearance());
+		Date date = Date.from(this.batman.getFirstAppearance().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		calendar.setTime(date);
 		String year = String.valueOf(calendar.get(Calendar.YEAR));
 		// force 2-digit representation of month and day
 		DecimalFormat dFormat = new DecimalFormat("00");
